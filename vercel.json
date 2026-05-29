@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd Pokemon-game && npm install && npm run build",
+  "outputDirectory": "Pokemon-game/dist/Pokemon-game/browser",
+  "cleanUrls": true,
+  "framework": "angular",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
