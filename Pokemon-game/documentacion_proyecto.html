@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Pokémon TCG – Documentación del Proyecto Académico</title>
+  <style>
+    :root {
+      --color-primary: #0066cc;
+      --color-secondary: #5e35b1;
+      --color-success: #2e7d32;
+      --color-warning: #f57c00;
+      --color-danger: #c62828;
+      --color-bg-light: #f8f9fa;
+      --color-border: #e9ecef;
+      --color-text-main: #212529;
+      --color-text-muted: #6c757d;
+      --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Print Optimizations */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 11pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .card, .table-container, pre {
+        page-break-inside: avoid;
+      }
+      a {
+        text-decoration: none !important;
+        color: #000 !important;
+      }
+    }
+
+    /* General reset and base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      line-height: 1.6;
+      color: var(--color-text-main);
+      background-color: var(--color-bg-light);
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 50px 60px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      border: 1px solid var(--color-border);
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      color: #111111;
+      margin-top: 1.8em;
+      margin-bottom: 0.6em;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      border-bottom: 2px solid var(--color-primary);
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 6px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin-bottom: 1.2em;
+      text-align: justify;
+    }
+
+    strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    ul, ol {
+      margin-bottom: 1.2em;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 0.4em;
+    }
+
+    /* Portada (Title Page) Styling */
+    .portada {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      padding: 40px 0;
+      border-bottom: 3px double var(--color-border);
+      margin-bottom: 60px;
+    }
+
+    .portada-header {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .portada-body {
+      margin: 40px 0;
+    }
+
+    .portada-title {
+      font-size: 2.5rem;
+      color: #111;
+      margin-bottom: 15px;
+      line-height: 1.2;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .portada-subtitle {
+      font-size: 1.25rem;
+      color: var(--color-text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .portada-footer {
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+    }
+
+    .divider {
+      width: 80px;
+      height: 4px;
+      background: var(--color-primary);
+      margin: 25px auto;
+      border-radius: 2px;
+    }
+
+    /* Cards and Alert Panels */
+    .card {
+      background: var(--color-bg-light);
+      border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+
+    .card.secondary { border-left-color: var(--color-secondary); }
+    .card.success { border-left-color: var(--color-success); }
+    .card.warning { border-left-color: var(--color-warning); }
+    .card.danger { border-left-color: var(--color-danger); }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Grid layout components */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    .badge-chip {
+      background: var(--color-bg-light);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .badge-val {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+    }
+
+    .badge-lbl {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Table styles */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f3f5;
+      font-weight: 600;
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-border);
+      color: #333;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Code Block styling */
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 16px 20px;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #f1f3f5;
+      color: #d63384;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 0.88em;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    /* Print Button */
+    .no-print-header {
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      border-radius: 8px;
+    }
+
+    .no-print-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+    }
+
+    .btn-print {
+      background: #0ea5e9;
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.25s;
+    }
+
+    .btn-print:hover {
+      background: #38bdf8;
+    }
+
+    /* Placeholder style for images */
+    .image-placeholder {
+      background: var(--color-bg-light);
+      border: 2px dashed var(--color-border);
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      color: var(--color-text-muted);
+      margin: 20px 0;
+      font-size: 0.9rem;
+    }
+
+    .image-placeholder-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print Header (Only visible on screen) -->
+  <div class="no-print-header no-print">
+    <span class="no-print-title">📄 Documentación del Proyecto Académico – Cyber Pokémon TCG</span>
+    <button type="button" class="btn-print" onclick="window.print()">🖨️ Guardar / Exportar a PDF</button>
+  </div>
+
+  <div class="container">
+
+    <!-- PORTADA ACADÉMICA -->
+    <div class="portada">
+      <div class="portada-header">
+        [Nombre de tu Universidad o Institución Académica]<br>
+        [Facultad de Ingeniería o Ciencias de la Computación]
+      </div>
+      
+      <div class="portada-body">
+        <h1 class="portada-title">Cyber Pokémon TCG</h1>
+        <div class="portada-subtitle">Plataforma de Duelos en Línea asíncronos y Servidor Relacional de Persistencia Local</div>
+        <div class="divider"></div>
+        <p style="text-align: center; font-size: 1.1rem; color: var(--color-text-muted);">
+          Documentación Completa del Proyecto de Fin de Ciclo
+        </p>
+
+        <!-- LINKS DEL PROYECTO -->
+        <div style="margin: 20px auto; padding: 15px; max-width: 500px; border: 1px solid var(--color-primary); border-radius: 8px; background-color: var(--color-bg-light); text-align: center;">
+          <p style="margin-bottom: 8px; font-weight: bold; text-align: center; font-size: 0.95rem;">🔗 Enlaces de Acceso y Repositorio:</p>
+          <p style="margin-bottom: 6px; font-size: 0.9rem; text-align: center;"><strong>Código en GitHub:</strong> <a href="https://github.com/romeromontielrenatapola-ship-it/Pokemon-game.git" target="_blank" style="color: var(--color-primary); font-family: monospace;">romeromontielrenatapola-ship-it/Pokemon-game</a></p>
+          <p style="margin-bottom: 0; font-size: 0.9rem; text-align: center;"><strong>Despliegue en Vercel:</strong> <a href="https://pokemon-game-eta-orpin.vercel.app/" target="_blank" style="color: var(--color-primary); font-family: monospace;">pokemon-game-eta-orpin.vercel.app</a></p>
+        </div>
+      </div>
+
+      <div class="portada-footer">
+        <strong>Presentado por:</strong> Renata Pola Romero Montiel<br>
+        <strong>Profesor / Evaluador:</strong> [Nombre del Profesor / Evaluador]<br>
+        <strong>Materia / Asignatura:</strong> [Nombre de la Materia]<br>
+        <strong>Fecha de Entrega:</strong> 28 de Mayo de 2026<br>
+        <strong>Ubicación:</strong> Escritorio, México
+      </div>
+    </div>
+
+    <!-- INTRODUCCIÓN -->
+    <h2>1. Introducción</h2>
+    <p>
+      En la era contemporánea de la web, las aplicaciones de página única (SPA) demandan arquitecturas capaces de integrar flujos en tiempo real, persistencia local segura e interfaces dinámicas y fluidas. Este proyecto de fin de ciclo, titulado <strong>Cyber Pokémon TCG</strong>, aborda esta problemática mediante la creación de una plataforma interactiva inspirada en el juego de cartas coleccionables de Pokémon.
+    </p>
+    <p>
+      Para lograr un sistema robusto, se implementa una arquitectura híbrida cliente-servidor utilizando <strong>Angular (v17+)</strong> como framework frontend, <strong>Supabase</strong> como plataforma Backend-as-a-Service (BaaS) en la nube para autenticación segura y base de datos con canales en tiempo real, y <strong>SQLite WebAssembly</strong> como motor relacional empotrado en el cliente para el almacenamiento local persistente de diagnósticos y partidas offline. Además, se integra el consumo directo de la <strong>PokeAPI</strong> para alimentar algorítmicamente las estadísticas de las cartas y capacidades de PWA para garantizar un funcionamiento libre de caídas.
+    </p>
+
+    <!-- OBJETIVOS -->
+    <h2>2. Objetivos del Proyecto</h2>
+    <h3>Objetivo General</h3>
+    <p>
+      Diseñar y construir una plataforma web completa de juego de cartas coleccionables (TCG) basada en el universo de Pokémon, provista de duelos tácticos contra la computadora (IA), modalidad multijugador en la nube en tiempo real, constructor de mazos interactivo, y persistencia de datos relacional híbrida local-nube.
+    </p>
+    <h3>Objetivos Específicos</h3>
+    <ul>
+      <li><strong>Integración Híbrida de Persistencia:</strong> Estructurar y coordinar de forma conyuntiva bases de datos relacionales en la nube (Supabase Cloud) y en el almacenamiento local del cliente (SQLite via WebAssembly).</li>
+      <li><strong>Consumo de PokeAPI Equilibrado:</strong> Programar un módulo de importación que traduzca de forma algorítmica las estadísticas brutas de Pokémon (HP, ATK, DEF) obtenidas de la PokeAPI en atributos jugables de cartas balanceadas con rarezas estratificadas (Común hasta Legendario).</li>
+      <li><strong>Inteligencia Artificial Desafiante (CPU):</strong> Diseñar una máquina de estados finitos que gobierne la conducta del oponente virtual (CPU AI), permitiéndole invocar Pokémon activos, banca, asociar energías y promover defensores desde su reserva.</li>
+      <li><strong>Sincronización Multijugador (PVP):</strong> Configurar canales de sincronización asíncrona mediante WebSockets en Supabase para serializar y actualizar tableros de combate dinámicamente entre jugadores remotos.</li>
+      <li><strong>Estabilidad y Robustez PWA:</strong> Optimizar un Service Worker (SW) personalizado para la carga offline de recursos locales, erradicando colapsos de red en el navegador y aislando peticiones de desarrollo en caliente (HMR).</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- DESCRIPCIÓN DEL VIDEOJUEGO -->
+    <h2>3. Descripción del Videojuego</h2>
+    <p>
+      <strong>Cyber Pokémon TCG</strong> es un videojuego de estrategia basado en turnos donde los jugadores asumen el rol de un duelista de red en una arena futurista de estética cyberpunk y glassmorphism.
+    </p>
+    <p>El ecosistema del videojuego cuenta con los siguientes componentes principales:</p>
+    <ul>
+      <li><strong>Panel Principal (Dashboard):</strong> Centro de control del hacker de red. Expone información del perfil del jugador (Avatar, Experiencia XP, Nivel), misiones diarias y acceso a la consola SQLite técnica.</li>
+      <li><strong>Tienda Gacha (Sobres):</strong> Sistema de adquisición de sobres de expansión. Por 300 monedas, el usuario abre un paquete con 5 cartas aleatorias generadas de forma segura y balanceada en la base de datos cloud mediante una función RPC.</li>
+      <li><strong>Constructor de Mazos (Deck Builder):</strong> Interfaz intuitiva y responsiva para arrastrar y configurar mazos de combate de 10 a 60 cartas. Enforcea las restricciones del juego (máximo 3 copias de una misma carta) y la propiedad de las cartas obtenidas.</li>
+      <li><strong>CPU Arena (Simulador):</strong> Zona de duelos offline contra el oponente virtual con tres modos de dificultad (Rookie, Rival, Grand Master) dotado de logs detallados en vivo.</li>
+      <li><strong>Lobby PVP (Online):</strong> Sistema multijugador online basado en invitaciones directas mediante identificadores de salas seguras.</li>
+    </ul>
+
+    <!-- REGLAS DEL JUEGO -->
+    <h2>4. Reglas del Juego</h2>
+    <div class="card secondary">
+      <div class="card-title">📖 REGLA 1: Flujo del Turno (Procesamiento de Red)</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        Cada turno consta de 4 fases principales:
+        <br><strong>• Fase de Robo:</strong> Se descarga la carta superior de tu baraja digital a la mano. Si la baraja está vacía, no robas pero continúas el combate de forma normal.
+        <br><strong>• Fase Principal:</strong> Puedes invocar 1 Pokémon activo, banca (máx. 3), adjuntar 1 energía por turno, o activar códigos entrenador (nanobots de curación, boosts de daño).
+        <br><strong>• Fase de Ataque:</strong> Ataca si tu activo tiene energías suficientes. Atacar finaliza tu turno ofensivo de forma inmediata.
+        <br><strong>• Fase Final:</strong> Se limpian los modificadores de turno y cedes el terminal al oponente.
+      </p>
+    </div>
+
+    <div class="card success">
+      <div class="card-title">⚔️ REGLA 2: Protocolos de Combate y Mitigación de Daño</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        <strong>• Ataque a Pokémon Activo:</strong> El daño neto restado al HP del defensor se calcula aplicando mitigación de defensa balanceada:
+        <code style="display: block; text-align: center; margin: 8px 0; font-size: 0.95rem;">Daño = Ataque - (Defensa Rival / 4)</code>
+        *Nota:* Todo ataque cargado tiene garantizado un daño mínimo de 10 LP sin importar la defensa enemiga.
+        <br><strong>• Ataque Directo:</strong> Si el oponente no tiene un Pokémon activo desplegado en su zona, la ofensiva impacta directamente a su núcleo restando el total del ataque de sus Life Points (LP).
+      </p>
+    </div>
+
+    <div class="card danger">
+      <div class="card-title">💀 REGLA 3: Condiciones de Victoria y Eliminación Total (Wipeout)</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        El duelo concluye de inmediato declarando un ganador en cualquiera de los siguientes tres escenarios:
+        <br>1. **Destrucción de Núcleo:** Reducir los Life Points (LP) del rival de 4000 a 0.
+        <br>2. **Eliminación Total (Wipeout):** Si un jugador se queda sin ningún Pokémon en juego (activo y banca) **Y** sin Pokémon disponibles en su mano ni en su baraja para ser invocados, es derrotado de inmediato al no poseer recursos de combate para continuar.
+        <br>3. **Rendición:** Conexión de salida voluntaria de la terminal.
+      </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- TECNOLOGÍAS UTILIZADAS -->
+    <h2>5. Tecnologías Utilizadas</h2>
+    <div class="badge-grid">
+      <div class="badge-chip">
+        <span class="badge-val">Angular</span>
+        <span class="badge-lbl">Frontend & Signals</span>
+      </div>
+      <div class="badge-chip">
+        <span class="badge-val">Supabase</span>
+        <span class="badge-lbl">Cloud BaaS & Realtime</span>
+      </div>
+      <div class="badge-chip">
+        <span class="badge-val">SQLite</span>
+        <span class="badge-lbl">WASM & Local Persistence</span>
+      </div>
+      <div class="badge-chip">
+        <span class="badge-val">PokeAPI</span>
+        <span class="badge-lbl">Catálogo & Stats REST</span>
+      </div>
+    </div>
+    <p>
+      El sistema se apoya en <strong>Angular 17</strong> para su arquitectura modular e independiente (Standalone Components), empleando <strong>Signals</strong> para una gestión de estado ultra-reactiva. El backend se apoya en <strong>Supabase</strong>, el cual provee almacenamiento de usuarios (Auth), bases de datos PostgreSQL para perfiles y colecciones, y canales WebSockets Realtime para el PVP asíncrono. La persistencia local y diagnósticos en consola se controlan mediante <strong>SQLite WebAssembly</strong> emulado en el navegador del cliente en un archivo `.db`. El catálogo inicial se consume dinámicamente de la <strong>PokeAPI</strong> y el soporte offline de activos se ejecuta mediante un **Service Worker** personalizado.
+    </p>
+
+    <!-- ARQUITECTURA GENERAL DEL SISTEMA -->
+    <h2>6. Arquitectura General del Sistema</h2>
+    <p>
+      La arquitectura sigue un patrón desacoplado y centrado en el cliente SPA que coordina tres flujos principales:
+    </p>
+    <ul>
+      <li><strong>Cliente Angular SPA:</strong> Controla el tablero mediante reactividad instantánea, despliega sonidos, y ejecuta animaciones locales de daño.</li>
+      <li><strong>Capa de Persistencia Híbrida:</strong> 
+        <br>• *Nube:* Supabase almacena los mazos globales del usuario e implementa una función de cobro y asignación segura (`open_pack` RPC) en la base de datos PostgreSQL.
+        <br>• *Local:* SQLite WebAssembly se inicializa localmente persistiendo el log técnico y resultados de duelos contra la computadora (historial de combates CPU).
+      </li>
+      <li><strong>Capa de Sincronización PVP:</strong> La tabla remota de salas PVP de Supabase se suscribe vía WebSockets asíncronos serializando el tablero completo en una columna `JSONB` centralizada.</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- DIAGRAMA DE BASE DE DATOS -->
+    <h2>7. Modelado de Datos, Diagramas y Descripción de Tablas</h2>
+    <p>
+      El ecosistema relacional de Cyber Pokémon TCG se basa en una arquitectura híbrida de persistencia. En la nube, <strong>Supabase</strong> aloja los perfiles de usuario, colecciones de cartas, misiones diarias e historiales. En el navegador, <strong>SQLite WebAssembly</strong> actúa de forma independiente para persistir diagnósticos locales, configuraciones y los resultados de encuentros sin conexión.
+    </p>
+    
+    <h3>7.1. Diagrama de Base de Datos Remota (Supabase Cloud PostgreSQL)</h3>
+    <p>
+      A continuación se presenta el diagrama de entidad-relación de la base de datos central en la nube. Las flechas indican las restricciones de clave foránea (FK) y sus cardinalidades lógicas:
+    </p>
+    <pre>
+       +------------------------------------+
+       |               CARDS                |
+       +------------------------------------+
+       | id (UUID, PK)                      |&lt;---------------+
+       | name (TEXT)                        |                |
+       | type (TEXT)                        |                |
+       | element (TEXT)                     |                |
+       | rarity (TEXT)                      |                |
+       | hp (INTEGER)                       |                |
+       | attack (INTEGER)                   |                |
+       | defense (INTEGER)                  |                |
+       | cost (INTEGER)                     |                |
+       | effect (TEXT)                      |                |
+       | image_url (TEXT)                   |                |
+       | description (TEXT)                 |                |
+       | created_at (TIMESTAMP)             |                |
+       +-------+----------------+-----------+                |
+               |                |                            |
+               | 1              | 1                          | 1
+               |                +------------------+         |
+               | 1..*                              |         |
+      +--------v-----------+              +--------v---------+--------+
+      |    DECK_CARDS      |              |      USER_COLLECTION       |
+      +--------------------+              +---------------------------+
+      | id (UUID, PK)      |              | id (UUID, PK)             |
+      | deck_id (UUID, FK) |              | user_id (UUID, FK)-------\|
+      | card_id (UUID, FK) |              | card_id (UUID, FK)       ||
+      | quantity (INTEGER) |              | quantity (INTEGER)       ||
+      +--------^-----------+              | created_at (TIMESTAMP)   ||
+               |                          +--------------------------++
+               | 1..*                                                 |
+               |                                                      |
+      +--------+-----------+                                          |
+      |       DECKS        |                                          |
+      +--------------------+                                          |
+      | id (UUID, PK)      |                                          |
+      | user_id (UUID, FK)-+-----------------+                         |
+      | name (TEXT)        |                 |                        |
+      | is_active (BOOLEAN)|                 |                        |
+      | created_at (TIMEST)|                 |                        |
+      +--------------------+                 |                        |
+                                             |                        |
+                                             | 1                      | 1
+                                    +--------v-----------+            |
+                                    |      PROFILES      |&lt;-----------+
+                                    +--------------------+
+                                    | id (UUID, PK)      |&lt;-----------+
+                                    | username (TEXT)    |            |
+                                    | avatar_url (TEXT)  |            |
+                                    | coins (INTEGER)    |            |
+                                    | xp (INTEGER)       |            |
+                                    | level (INTEGER)    |            |
+                                    | created_at (TIMEST)|            |
+                                    +---+----+----+------+            |
+                                        |    |    |                   |
+                                      1 |  1 |  1 | 1                 |
+                                        |    |    +-------------+     |
+                       +----------------+    |                  |     |
+                       |                     |                  |     |
+              +--------v-----------+   +-----v--------------+   |     |
+              |      MATCHES       |   |   DAILY_MISSIONS   |   |     |
+              +--------------------+   +--------------------+   |     |
+              | id (UUID, PK)      |   | id (UUID, PK)      |   |     |
+              | user_id (UUID, FK) |   | user_id (UUID, FK) |   |     |
+              | opponent_name(TEXT)|   | title (TEXT)       |   |     |
+              | result (TEXT)      |   | description (TEXT) |   |     |
+              | xp_gained (INTEGER)|   | type (TEXT)        |   |     |
+              | coins_gai (INTEGER)|   | reward_xp (INTEGER)|   |     |
+              | created_at (TIMEST)|   | reward_coi (INTEGE)|   |     |
+              +--------------------+   | target_val (INTEGE)|   |     |
+                                       | current_va (INTEGE)|   |     |
+                                       | is_complet (BOOLEA)|   |     |
+                                       | is_claimed (BOOLEA)|   |     |
+                                       | created_at (TIMEST)|   |     |
+                                       +--------------------+   |     |
+                                                                |     |
+                                                              1 |   * | 1
+                                                      +---------v-----v----+
+                                                      |  REWARDS_HISTORY   |
+                                                      +--------------------+
+                                                      | id (UUID, PK)      |
+                                                      | user_id (UUID, FK) |
+                                                      | card_id (UUID, FK)-+
+                                                      | created_at (TIMEST)|
+                                                      +--------------------+
+    </pre>
+
+    <h3>7.2. Diagrama de Base de Datos Local (SQLite WebAssembly Client)</h3>
+    <p>
+      Estructura de persistencia local en caché offline empotrada en el navegador del cliente. Provee soporte para diagnósticos, configuraciones y visor local:
+    </p>
+    <pre>
++------------------------------------+
+|            LOCAL_CARDS             |
++------------------------------------+
+| id (TEXT, PK)                      |&lt;---------------+
+| name (TEXT)                        |                |
+| type (TEXT)                        |                |
+| element (TEXT)                     |                |
+| rarity (TEXT)                      |                |
+| hp (INTEGER)                       |                |
+| attack (INTEGER)                   |                |
+| defense (INTEGER)                  |                |
+| cost (INTEGER)                     |                |
+| image_url (TEXT)                   |                |
+| description (TEXT)                 |                |
+| created_at (TEXT)                  |                |
++------------------------------------+                |
+                                                      | 1
+                                                      | 1..*
+                                             +--------+-----------+
+                                             |     TEMP_DECK      |
+                                             +--------------------+
+                                             | deck_id (TEXT, PK) |
+                                             | card_id (TEXT, PK) |
+                                             | quantity (INTEGER) |
+                                             +--------------------+
+
++------------------------------------+       +------------------------------------+
+|            USER_CONFIG             |       |           LOCAL_MATCHES            |
++------------------------------------+       +------------------------------------+
+| key (TEXT, PK)                     |       | id (TEXT, PK)                      |
+| value (TEXT)                       |       | difficulty (TEXT)                  |
++------------------------------------+       | opponent_name (TEXT)               |
+                                             | result (TEXT)                      |
++------------------------------------+       | lp_player (INTEGER)                |
+|           LOCAL_HISTORY            |       | lp_opponent (INTEGER)              |
++------------------------------------+       | date (TEXT)                        |
+| id (TEXT, PK)                      |       +------------------------------------+
+| log_type (TEXT)                    |
+| description (TEXT)                 |
+| timestamp (TEXT)                   |
++------------------------------------+
+    </pre>
+
+    <h3>7.3. Descripción Detallada de Tablas de Supabase (Cloud PostgreSQL)</h3>
+    <p>
+      La siguiente tabla contiene la descripción técnica detallada de las 8 tablas de la base de datos central en Supabase, incluyendo restricciones y tipos de datos:
+    </p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Tabla</th>
+            <th>Columna</th>
+            <th>Tipo de Datos</th>
+            <th>Restricciones y Descripción Técnica</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- PROFILES -->
+          <tr>
+            <td rowspan="7"><strong>profiles</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria, enlazada a la autenticación de Supabase (auth.users.id).</td>
+          </tr>
+          <tr>
+            <td>username</td>
+            <td>TEXT</td>
+            <td>Nombre de usuario visible, restricción UNIQUE.</td>
+          </tr>
+          <tr>
+            <td>avatar_url</td>
+            <td>TEXT</td>
+            <td>Enlace a la imagen del perfil de duelista (NULL permitido).</td>
+          </tr>
+          <tr>
+            <td>coins</td>
+            <td>INTEGER</td>
+            <td>Monedas para transacciones de sobres de gacha (inicia en 150, default 150).</td>
+          </tr>
+          <tr>
+            <td>xp</td>
+            <td>INTEGER</td>
+            <td>Puntos de experiencia ganados (default 0).</td>
+          </tr>
+          <tr>
+            <td>level</td>
+            <td>INTEGER</td>
+            <td>Nivel de duelista calculado (default 1).</td>
+          </tr>
+          <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>Marca temporal de registro (default NOW() en UTC).</td>
+          </tr>
+
+          <!-- CARDS -->
+          <tr>
+            <td rowspan="13"><strong>cards</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria, identificador único autogenerado.</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>TEXT</td>
+            <td>Nombre de la carta (Pikachu, Poción, etc.), NOT NULL.</td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>TEXT</td>
+            <td>Tipo de carta, CHECK IN ('pokemon', 'trainer', 'energy').</td>
+          </tr>
+          <tr>
+            <td>element</td>
+            <td>TEXT</td>
+            <td>Elemento CHECK IN ('fire', 'water', 'electric', 'grass', 'dark', 'light', 'colorless').</td>
+          </tr>
+          <tr>
+            <td>rarity</td>
+            <td>TEXT</td>
+            <td>CHECK IN ('common', 'uncommon', 'rare', 'epic', 'ultra-rare', 'legendary').</td>
+          </tr>
+          <tr>
+            <td>hp</td>
+            <td>INTEGER</td>
+            <td>Puntos de vida normalizados (40-180), NULL para no-Pokémon.</td>
+          </tr>
+          <tr>
+            <td>attack</td>
+            <td>INTEGER</td>
+            <td>Daño de ataque base, NULL para no-Pokémon.</td>
+          </tr>
+          <tr>
+            <td>defense</td>
+            <td>INTEGER</td>
+            <td>Capacidad de mitigación de daño, default 0.</td>
+          </tr>
+          <tr>
+            <td>cost</td>
+            <td>INTEGER</td>
+            <td>Costo de energía para atacar o usar la carta, default 0.</td>
+          </tr>
+          <tr>
+            <td>effect</td>
+            <td>TEXT</td>
+            <td>Efecto para entrenadores (ej: 'HEAL_50', 'DRAW_2', 'BOOST_ATTACK_30').</td>
+          </tr>
+          <tr>
+            <td>image_url</td>
+            <td>TEXT</td>
+            <td>Ruta local o remota de la imagen del Pokémon.</td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td>TEXT</td>
+            <td>Texto descriptivo / lore de la carta.</td>
+          </tr>
+          <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>Marca temporal de creación en el catálogo general.</td>
+          </tr>
+
+          <!-- USER_COLLECTION -->
+          <tr>
+            <td rowspan="5"><strong>user_collection</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria única de pertenencia.</td>
+          </tr>
+          <tr>
+            <td>user_id</td>
+            <td>UUID (FK)</td>
+            <td>Clave foránea REFERENCES profiles(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>card_id</td>
+            <td>UUID (FK)</td>
+            <td>Clave foránea REFERENCES cards(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>quantity</td>
+            <td>INTEGER</td>
+            <td>Número de copias que posee el usuario (CHECK >= 0).</td>
+          </tr>
+          <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>Fecha de obtención del recurso (default NOW()).</td>
+          </tr>
+
+          <!-- DECKS -->
+          <tr>
+            <td rowspan="5"><strong>decks</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria del mazo.</td>
+          </tr>
+          <tr>
+            <td>user_id</td>
+            <td>UUID (FK)</td>
+            <td>Creador del mazo, REFERENCES profiles(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>TEXT</td>
+            <td>Nombre asignado al mazo (default 'Nuevo Mazo').</td>
+          </tr>
+          <tr>
+            <td>is_active</td>
+            <td>BOOLEAN</td>
+            <td>Indica si es el mazo activo de combate (default false).</td>
+          </tr>
+          <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>Fecha y hora de estructuración del mazo.</td>
+          </tr>
+
+          <!-- DECK_CARDS -->
+          <tr>
+            <td rowspan="4"><strong>deck_cards</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria de relación.</td>
+          </tr>
+          <tr>
+            <td>deck_id</td>
+            <td>UUID (FK)</td>
+            <td>Contenedor, REFERENCES decks(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>card_id</td>
+            <td>UUID (FK)</td>
+            <td>Carta enlazada, REFERENCES cards(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>quantity</td>
+            <td>INTEGER</td>
+            <td>Copias en el mazo (rango CHECK de 1 a 3). UNIQUE (deck_id, card_id).</td>
+          </tr>
+
+          <!-- MATCHES -->
+          <tr>
+            <td rowspan="7"><strong>matches</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria del historial de juego.</td>
+          </tr>
+          <tr>
+            <td>user_id</td>
+            <td>UUID (FK)</td>
+            <td>Hacker participante, REFERENCES profiles(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>opponent_name</td>
+            <td>TEXT</td>
+            <td>Nombre del oponente (CPU o alias de rival).</td>
+          </tr>
+          <tr>
+            <td>result</td>
+            <td>TEXT</td>
+            <td>Resultado del encuentro, CHECK IN ('victory', 'defeat').</td>
+          </tr>
+          <tr>
+            <td>xp_gained</td>
+            <td>INTEGER</td>
+            <td>Puntos de experiencia obtenidos en el encuentro.</td>
+          </tr>
+          <tr>
+            <td>coins_gained</td>
+            <td>INTEGER</td>
+            <td>Monedas ganadas en el encuentro.</td>
+          </tr>
+          <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>Fecha y hora del combate de red.</td>
+          </tr>
+
+          <!-- DAILY_MISSIONS -->
+          <tr>
+            <td rowspan="11"><strong>daily_missions</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria de misión diaria.</td>
+          </tr>
+          <tr>
+            <td>user_id</td>
+            <td>UUID (FK)</td>
+            <td>Asignado, REFERENCES profiles(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td>TEXT</td>
+            <td>Título legible (ej: 'Primera Victoria').</td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td>TEXT</td>
+            <td>Detalle del requerimiento técnico.</td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>TEXT</td>
+            <td>Categoría de la misión, CHECK IN ('win_battle', 'play_cards', 'deal_damage').</td>
+          </tr>
+          <tr>
+            <td>reward_xp</td>
+            <td>INTEGER</td>
+            <td>XP entregada al completar.</td>
+          </tr>
+          <tr>
+            <td>reward_coins</td>
+            <td>INTEGER</td>
+            <td>Monedas entregadas al completar.</td>
+          </tr>
+          <tr>
+            <td>target_value</td>
+            <td>INTEGER</td>
+            <td>Meta requerida para completar la misión.</td>
+          </tr>
+          <tr>
+            <td>current_value</td>
+            <td>INTEGER</td>
+            <td>Progreso acumulado por el jugador (default 0).</td>
+          </tr>
+          <tr>
+            <td>is_completed</td>
+            <td>BOOLEAN</td>
+            <td>Indica si se alcanzó el target_value (default false).</td>
+          </tr>
+          <tr>
+            <td>is_claimed</td>
+            <td>BOOLEAN</td>
+            <td>Indica si el usuario cobró la recompensa (default false).</td>
+          </tr>
+
+          <!-- REWARDS_HISTORY -->
+          <tr>
+            <td rowspan="4"><strong>rewards_history</strong></td>
+            <td>id</td>
+            <td>UUID (PK)</td>
+            <td>Clave primaria de logs de recompensas.</td>
+          </tr>
+          <tr>
+            <td>user_id</td>
+            <td>UUID (FK)</td>
+            <td>Quién abre el sobre, REFERENCES profiles(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>card_id</td>
+            <td>UUID (FK)</td>
+            <td>Carta entregada, REFERENCES cards(id) ON DELETE CASCADE.</td>
+          </tr>
+          <tr>
+            <td>created_at</td>
+            <td>TIMESTAMP</td>
+            <td>Fecha y hora del reclamo de gacha.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7.4. Descripción Detallada de Tablas de SQLite (Local Browser Storage)</h3>
+    <p>
+      La siguiente tabla contiene la descripción técnica detallada de las 5 tablas de la base de datos local SQLite WebAssembly emulada en el cliente:
+    </p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Tabla</th>
+            <th>Columna</th>
+            <th>Tipo de Datos</th>
+            <th>Descripción Técnica y Propósito</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- LOCAL_CARDS -->
+          <tr>
+            <td rowspan="12"><strong>local_cards</strong></td>
+            <td>id</td>
+            <td>TEXT (PK)</td>
+            <td>ID único en caché local para acceso offline.</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>TEXT</td>
+            <td>Nombre de la criatura clásica.</td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>TEXT</td>
+            <td>Tipo de carta (pokemon, energy, trainer).</td>
+          </tr>
+          <tr>
+            <td>rarity</td>
+            <td>TEXT</td>
+            <td>Categoría de rareza normalizada local.</td>
+          </tr>
+          <tr>
+            <td>hp</td>
+            <td>INTEGER</td>
+            <td>HP re-escalado (40-180) para equilibrio de juego.</td>
+          </tr>
+          <tr>
+            <td>attack</td>
+            <td>INTEGER</td>
+            <td>Daño de ataque base (20-100).</td>
+          </tr>
+          <tr>
+            <td>defense</td>
+            <td>INTEGER</td>
+            <td>Reducción de daño mitigado (10-60).</td>
+          </tr>
+          <tr>
+            <td>cost</td>
+            <td>INTEGER</td>
+            <td>Energía requerida para activar ataques.</td>
+          </tr>
+          <tr>
+            <td>image_url</td>
+            <td>TEXT</td>
+            <td>Ruta local de la imagen.</td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td>TEXT</td>
+            <td>Lore de la carta Pokémon.</td>
+          </tr>
+          <tr>
+            <td>created_at</td>
+            <td>TEXT</td>
+            <td>Fecha en formato texto.</td>
+          </tr>
+
+          <!-- USER_CONFIG -->
+          <tr>
+            <td rowspan="2"><strong>user_config</strong></td>
+            <td>key</td>
+            <td>TEXT (PK)</td>
+            <td>Ajuste de configuración local (audio_volume, audio_mute, theme).</td>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>TEXT</td>
+            <td>Valor string asociado al ajuste.</td>
+          </tr>
+
+          <!-- LOCAL_MATCHES -->
+          <tr>
+            <td rowspan="7"><strong>local_matches</strong></td>
+            <td>id</td>
+            <td>TEXT (PK)</td>
+            <td>Identificador único del encuentro offline contra el CPU.</td>
+          </tr>
+          <tr>
+            <td>difficulty</td>
+            <td>TEXT</td>
+            <td>Dificultad (rookie, rival, master).</td>
+          </tr>
+          <tr>
+            <td>opponent_name</td>
+            <td>TEXT</td>
+            <td>Nombre de la inteligencia artificial.</td>
+          </tr>
+          <tr>
+            <td>result</td>
+            <td>TEXT</td>
+            <td>Resultado del combate (victory o defeat).</td>
+          </tr>
+          <tr>
+            <td>lp_player</td>
+            <td>INTEGER</td>
+            <td>Life Points del jugador humano al finalizar.</td>
+          </tr>
+          <tr>
+            <td>lp_opponent</td>
+            <td>INTEGER</td>
+            <td>Life Points de la máquina al finalizar.</td>
+          </tr>
+          <tr>
+            <td>date</td>
+            <td>TEXT</td>
+            <td>Fecha y hora del duelo offline local.</td>
+          </tr>
+
+          <!-- LOCAL_HISTORY -->
+          <tr>
+            <td rowspan="4"><strong>local_history</strong></td>
+            <td>id</td>
+            <td>TEXT (PK)</td>
+            <td>Identificador único del log.</td>
+          </tr>
+          <tr>
+            <td>log_type</td>
+            <td>TEXT</td>
+            <td>Categoría del suceso (ej: 'battle_start', 'error_service').</td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td>TEXT</td>
+            <td>Explicación del evento o diagnóstico técnico.</td>
+          </tr>
+          <tr>
+            <td>timestamp</td>
+            <td>TEXT</td>
+            <td>Marca temporal del evento local.</td>
+          </tr>
+
+          <!-- TEMP_DECK -->
+          <tr>
+            <td rowspan="3"><strong>temp_deck</strong></td>
+            <td>deck_id</td>
+            <td>TEXT (PK)</td>
+            <td>ID del borrador de mazo en edición local. Clave primaria compuesta.</td>
+          </tr>
+          <tr>
+            <td>card_id</td>
+            <td>TEXT (PK)</td>
+            <td>ID de la carta añadida. Clave primaria compuesta.</td>
+          </tr>
+          <tr>
+            <td>quantity</td>
+            <td>INTEGER</td>
+            <td>Número de copias temporales seleccionadas (límite estricto 1 a 3).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- POKEAPI Y CONSUMO -->
+    <h2>8. Integración y Balanceo Algorítmico (PokeAPI)</h2>
+    <p>
+      El sistema se nutre dinámicamente de la <strong>PokeAPI</strong> mediante peticiones asíncronas estructuradas. Dado que las estadísticas brutas de la PokeAPI son demasiado elevadas o desbalanceadas, se programó un **módulo algorítmico de escalado** para normalizar los valores y crear cartas justas:
+    </p>
+    <ul>
+      <li><strong>Normalización de HP:</strong> Se extrae el valor `stats.hp` de la criatura y se re-escala matemáticamente a un rango cerrado entre **40 y 180 HP**, garantizando que criaturas más débiles puedan actuar como escudos en el juego.</li>
+      <li><strong>Normalización de Daño (ATK):</strong> El atributo `stats.attack` de la API se escala a un rango de daño jugable entre **20 y 100 puntos de ataque**.</li>
+      <li><strong>Defensa Táctica:</strong> Se toma el valor `stats.defense` y se ajusta a un rango de mitigación de daño entre **10 y 60**.</li>
+      <li><strong>Mapeo de Rareza:</strong> El sistema evalúa la suma total de las estadísticas base del Pokémon en la API (BST). Si supera los **500 puntos**, la carta se etiqueta automáticamente como **Épica o Legendaria**, y se asocia a un costo de invocación proporcionalmente más alto.</li>
+    </ul>
+
+    <!-- MODALIDADES DE JUEGO -->
+    <h2>9. Modalidades de Juego e Inteligencia Artificial</h2>
+    
+    <h3>9.1. Duelos Tácticos contra la Computadora (IA)</h3>
+    <p>
+      El modo offline contra la computadora está gobernado por una **Inteligencia Artificial de Máquina de Estados** implementada en <code>battle.component.ts</code>. Durante el turno de la CPU, se ejecuta una serie de fases lógicas consecutivas asíncronas con intervalos de 250 ms:
+    </p>
+    <ul>
+      <li><strong>1. Validación de Invocación / Promoción de Banca:</strong> Al inicio de su turno, si la CPU no tiene un Pokémon Activo, escanea su **Banca** y promueve automáticamente al Pokémon de banca con el atributo de ataque más alto. Si no tiene banca, busca en su mano y realiza un despliegue desde allí. Esto garantiza que la CPU siempre defienda su red.</li>
+      <li><strong>2. Despliegue en Banca:</strong> Si tiene espacio disponible en la banca (máx. 3), evalúa su mano y envía a reserva el mejor Pokémon restante para futuras defensas.</li>
+      <li><strong>3. Carga de Energía:</strong> La IA busca en su mano cartas de tipo energía y asocia exactamente una energía a su Pokémon activo (respetando la regla de 1 por turno).</li>
+      <li><strong>4. Activación de Códigos (Entrenador):</strong> La CPU analiza sus cartas de entrenador en mano. Si tiene cartas de curación y su activo está dañado, las activa asíncronamente (curando +50 o +100 HP) o códigos de robo para recargar recursos.</li>
+      <li><strong>5. Ejecución de Ofensiva (Ataque):</strong> Si su Pokémon activo cuenta con las energías necesarias, ataca al defensor del jugador. Si el jugador está indefenso, ataca directamente a sus Life Points (LP).</li>
+    </ul>
+
+    <h3>9.2. Duelos en Línea (PVP Multijugador)</h3>
+    <p>
+      La modalidad en línea se apoya en los canales asíncronos en tiempo real de Supabase. El tablero completo se serializa en una estructura JSON y se aloja en la columna <code>game_state</code>. Ambos jugadores se suscriben al canal asíncrono y, mediante reactividad de Angular Signals, deserializan los estados del tablero, inyectando efectos visuales instantáneos al recibir actualizaciones.
+    </p>
+
+    <div class="page-break"></div>
+
+    <!-- HISTORIAL DE PROBLEMAS Y SOLUCIONES -->
+    <h2>10. Historial de Problemas Encontrados y Soluciones Aplicadas</h2>
+    
+    <div class="card success">
+      <div class="card-title">📁 10.1. Error 404: Tabla rewards_history faltante en la Nube</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        <strong>• Problema:</strong> La Tienda Gacha arrojaba errores persistentes HTTP 404 porque la tabla para registrar cartas obtenidas recientemente en Supabase no existía en el servidor.
+        <br><strong>• Solución:</strong> Se ejecutó una consulta SQL para crear de forma persistente la tabla con relaciones foráneas. Se robusteció el servicio <code>shop.service.ts</code> con bloques `try/catch` para fallar de forma silenciosa y evitar la latencia en la consola.
+      </p>
+    </div>
+
+    <div class="card success">
+      <div class="card-title">⚙️ 10.2. Error de Intercepción del Service Worker (TypeError sw.js)</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        <strong>• Problema:</strong> El navegador presentaba un colapso intermitente al cargar el dashboard debido a que el Service Worker devolvía `undefined` al interceptar de forma errónea llamadas de hot-reload locales de Angular o extensiones.
+        <br><strong>• Solución:</strong> Se filtraron llamadas de desarrollo (HMR, sockjs, WebSockets locales de Angular) y extensiones (`chrome-extension://`). Adicionalmente, el SW se rediseñó para que siempre retorne un objeto `Response` alternativo (cargando index.html en SPA o respuesta 503 en recursos), eliminando los fallos en consola.
+      </p>
+    </div>
+
+    <div class="card success">
+      <div class="card-title">🃏 10.3. Mazo Activo de Agua Reemplazado por Mazo de Planta (Bonsly)</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        <strong>• Problema:</strong> Al iniciar duelos CPU, el sistema cargaba cartas de Planta por defecto en lugar del mazo de Agua del usuario. Ocurría porque la validación comprobaba la cantidad de tipos únicos en el array en lugar de la suma de las copias (cantidad). Al tener 8 tipos, fallaba (8 < 10) y forzaba el fallback.
+        <br><strong>• Solución:</strong> Se modificó la validación en ambos modos de juego utilizando `reduce` para acumular la suma real de copias (`dc.quantity`):
+        <code style="display: block; font-size: 0.85rem; margin-top: 6px;">const totalCardsCount = deckCards.reduce((sum, dc) => sum + dc.quantity, 0);</code>
+      </p>
+    </div>
+
+    <div class="card success">
+      <div class="card-title">💀 10.4. Duelos Concluidos de Golpe por Mazo Vacío (Deck-out)</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        <strong>• Problema:</strong> Con mazos rápidos de 13 cartas, los jugadores perdían instantáneamente en el turno 8 al intentar robar de una baraja vacía, resultando en derrotas insatisfactorias.
+        <br><strong>• Solución:</strong> Se removió la derrota instantánea por quedarse sin cartas. Ahora el juego emite un aviso en la consola de combate y permite continuar peleando con los recursos del tablero y de la mano.
+      </p>
+    </div>
+
+    <div class="card success">
+      <div class="card-title">👾 10.5. CPU Inerte sin Pokémon Activo con Banca Disponible</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        <strong>• Problema:</strong> Al destruir al activo de la CPU, si su mano estaba vacía, esta se quedaba paralizada y no promovía ninguno de los Pokémon que tenía en banca, dejando su red desprotegida para siempre.
+        <br><strong>• Solución:</strong> Se programó la lógica de promoción táctica de banca para la IA. Si su activo es nulo, la CPU promueve automáticamente al Pokémon de su banca que tenga el mayor daño de ataque.
+      </p>
+    </div>
+
+    <div class="card success">
+      <div class="card-title">🏆 10.6. Duelos Congelados sin Pokémon Jugables (recursos agotados)</div>
+      <p style="font-size: 0.9rem; margin-bottom: 0;">
+        <strong>• Problema:</strong> Con la anulación de la derrota por mazo vacío, si a la CPU se le acababan los Pokémon en campo pero tenía energías/entrenadores en mano, el juego continuaba indefinidamente sin poder actuar.
+        <br><strong>• Solución:</strong> Se implementó la regla de **Eliminación Total (Wipeout)**. Si a un jugador no le quedan Pokémon en campo, mano ni baraja, es declarado derrotado inmediatamente, otorgando una victoria/derrota justa.
+      </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- CAPTURAS DE PANTALLA -->
+    <h2>11. Capturas de Pantalla del Sistema</h2>
+    
+    <div class="image-placeholder">
+      <span class="image-placeholder-icon">🖼️</span>
+      <strong>Captura 1: Dashboard e Interfaz de Perfil Hacker</strong>
+      <p style="font-size: 0.8rem; margin: 4px 0 0 0; text-align: center;">Inserta aquí la captura mostrando el avatar, monedas, misiones diarias y barra lateral ciberpunk.</p>
+    </div>
+
+    <div class="image-placeholder">
+      <span class="image-placeholder-icon">🖼️</span>
+      <strong>Captura 2: Tienda Gacha y Apertura de Sobres</strong>
+      <p style="font-size: 0.8rem; margin: 4px 0 0 0; text-align: center;">Inserta aquí la captura mostrando la tienda, el botón de abrir sobre y el historial lateral de cartas obtenidas.</p>
+    </div>
+
+    <div class="image-placeholder">
+      <span class="image-placeholder-icon">🖼️</span>
+      <strong>Captura 3: Constructor de Mazos Interactivo</strong>
+      <p style="font-size: 0.8rem; margin: 4px 0 0 0; text-align: center;">Inserta aquí la captura de tu Deck Builder con las cartas de tu colección y el mazo activo seleccionado.</p>
+    </div>
+
+    <div class="image-placeholder">
+      <span class="image-placeholder-icon">🖼️</span>
+      <strong>Captura 4: Arena de Combate contra la CPU</strong>
+      <p style="font-size: 0.8rem; margin: 4px 0 0 0; text-align: center;">Inserta aquí la captura de la CPU Arena con el botón de ataque activado y los logs de la consola en vivo.</p>
+    </div>
+
+    <div class="image-placeholder">
+      <span class="image-placeholder-icon">🖼️</span>
+      <strong>Captura 5: Manual de Reglas Rediseñado (Modal)</strong>
+      <p style="font-size: 0.8rem; margin: 4px 0 0 0; text-align: center;">Inserta aquí la captura del nuevo modal de reglas de duelo, mostrando su diseño espaciado con bordes de neón.</p>
+    </div>
+
+    <div class="image-placeholder">
+      <span class="image-placeholder-icon">🖼️</span>
+      <strong>Captura 6: Consola SQLite de Diagnósticos en Vivo</strong>
+      <p style="font-size: 0.8rem; margin: 4px 0 0 0; text-align: center;">Inserta aquí la captura de la consola SQLite local ejecutando consultas SQL sobre las tablas de base de datos locales.</p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- MANUAL DE USUARIO -->
+    <h2>12. Manual de Usuario</h2>
+    <p>
+      El sistema ha sido dotado de una interfaz interactiva y adaptativa ciberpunk. A continuación se detallan las instrucciones de uso para un usuario de red:
+    </p>
+    <ol>
+      <li><strong>Ingreso y Cuenta:</strong> Crea tu cuenta de hacker o inicia sesión. Observarás tu barra lateral izquierda con tu nivel (Lvl 3, Lvl 4, etc.) y tus monedas iniciales de red.</li>
+      <li><strong>Desbloqueo de Pokémon (Tienda Gacha):</strong> Dirígete a la *Tienda Gacha*. Haz clic en el botón *"ABRIR SOBRE (300 Monedas)"*. Verás revelarse tus 5 cartas desbloqueadas. Éstas se añadirán automáticamente a tu base de datos global y aparecerán en el historial de *"Últimas Cartas Desbloqueadas"* a la derecha.</li>
+      <li><strong>Estructuración de tu Mazo:</strong> Abre el *Deck Builder*. Selecciona *"Crear Nuevo Mazo"*. Haz clic sobre las cartas a la izquierda para sumarlas (máximo 3 copias por mazo). Una vez alcances el mínimo de 10 cartas, el botón *"Marcar como Activo"* se desbloqueará. Haz clic en él para guardar la estructura.</li>
+      <li><strong>Arena de Combate:</strong> Haz clic en *CPU Arena*. Selecciona tu dificultad y presiona iniciar. Despliega tus Pokémon de tu mano a la arena de combate (puedes colocarlos como activo o banca). Carga exactamente 1 carta de energía por turno. Cuando acumules la energía que requiere tu activo, haz clic en *"EJECUTAR ATAQUE"*. Al finalizar tus acciones, presiona *"PASAR TURNO"*.</li>
+      <li><strong>Manual de Reglas:</strong> Si tienes dudas sobre los cálculos de daño mitigado, presiona el botón del cuaderno (📖) en el panel de control central para abrir el manual de reglas rediseñado y espacioso en cualquier segundo.</li>
+    </ol>
+
+    <!-- CONCLUSIONES -->
+    <h2>13. Conclusiones</h2>
+    <p>
+      1. **Eficiencia en la Reactividad Cliente:** El uso de Angular Signals demostró ser una solución sobresaliente en términos de rendimiento. Al gestionar de forma reactiva la vida del jugador, energías asociadas y logs, se evita el re-renderizado total innecesario que ralentizaría a aplicaciones web de páginas únicas (SPAs) ordinarias.
+    </p>
+    <p>
+      2. **Robustez mediante Sistemas Híbridos (Local-Nube):** Diseñar arquitecturas relacionales híbridas que coordinen de manera concurrente Supabase Cloud en la nube con SQLite WebAssembly en el cliente dota a los sistemas web de una resiliencia offline sobresaliente. Permite el guardado de borradores de mazos e historiales locales y el mantenimiento de diagnósticos completos sin depender del estado de la conexión a internet.
+    </p>
+    <p>
+      3. **Flexibilidad del Diseño de Reglas:** A través del desarrollo e iteración del proyecto, se concluye que el diseño lógico de un videojuego debe priorizar la jugabilidad y la flexibilidad de las reglas. La implementación de la anulación del *deck-out* prematuro y la creación del *wipeout* de recursos solucionan situaciones de bloqueo y garantizan una experiencia de juego sumamente fluida y gratificante.
+    </p>
+    <p>
+      4. **Seguridad y Robustez en PWAs:** El diseño preventivo de Service Workers que filtren herramientas locales de desarrollo y aseguren objetos `Response` de fallback consistentes erradica el colapso del motor de renderizado y garantiza la estabilidad del videojuego bajo cualquier condición de red.
+    </p>
+
+    <!-- REFERENCIAS -->
+    <h2>14. Referencias Consultadas</h2>
+    <ul>
+      <li><strong>Angular Development Group:</strong> *Signals Guide and Standalone Components API Reference*. Disponible en: <a href="https://angular.dev" target="_blank">angular.dev</a></li>
+      <li><strong>Supabase BaaS Docs:</strong> *PostgreSQL Realtime channels and RPC custom database functions*. Disponible en: <a href="https://supabase.com/docs" target="_blank">supabase.com/docs</a></li>
+      <li><strong>SQLite WebAssembly WG:</strong> *Client-side relational database persistence in WASM*. Disponible en: <a href="https://sqlite.org/wasm" target="_blank">sqlite.org/wasm</a></li>
+      <li><strong>PokeAPI Team:</strong> *The RESTful Pokémon API database endpoint specification*. Disponible en: <a href="https://pokeapi.co" target="_blank">pokeapi.co</a></li>
+      <li><strong>MDN Web Docs:</strong> *Service Workers API, PWA architecture and Response standard specification*. Mozilla. Disponible en: <a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a></li>
+      <li><strong>Official Pokémon TCG Rulebook:</strong> *Basic and Advanced turn play guidelines*. The Pokémon Company International.</li>
+    </ul>
+
+  </div>
+
+</body>
+</html>
